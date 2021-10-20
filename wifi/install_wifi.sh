@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "start install wifi..."
+echo "start installing wifi=====>"
 
 set -e
 set -x
@@ -118,3 +118,5 @@ systemctl enable /usr/lib/systemd/rpi-share-wifi-iptables.service
 systemctl start rpi-share-wifi-iptables
 
 set +x
+
+echo "wifi has been installed, the name is rpi, the password is 12345678, and the ip id 192.168.4.1"
