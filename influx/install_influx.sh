@@ -2,7 +2,7 @@
 
 echo "start install influxdb and chronograf=====>"
 
-sudo dpkg -i influxdb_1.8.3_armhf.deb
+sudo dpkg -i influxdb_1.7.10_armhf.deb
 sudo service influxdb start
 
 sudo dpkg -i chronograf_1.8.7_armhf.deb
