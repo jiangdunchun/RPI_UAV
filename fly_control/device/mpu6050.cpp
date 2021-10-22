@@ -35,7 +35,7 @@ mpu6050::~mpu6050() {
 
 }
 
-mpu6050_data mpu6050::read_data(void) const {
+mpu6050_data mpu6050::read_data(void) {
     mpu6050_data data;
     data.a_x = read_raw_data(ACCEL_XOUT_H) / 16384.0f;
 	data.a_y = read_raw_data(ACCEL_YOUT_H) / 16384.0f;

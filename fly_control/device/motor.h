@@ -4,6 +4,7 @@
 #include <pthread.h>
 
 class motor {
+typedef void* (*pFUNC)(void *);
 private:
     unsigned int m_address;
     unsigned int m_speed;
@@ -11,7 +12,7 @@ private:
     pthread_mutex_t m_mutex;
     pthread_t m_run;
 
-    void motor_run(void) const;
+    void motor_run(void);
 public:
     motor(unsigned int address, unsigned int max_speed = 1000);
     ~motor();

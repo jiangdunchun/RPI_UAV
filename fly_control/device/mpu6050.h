@@ -17,7 +17,7 @@ private:
 public:
     mpu6050(int device_address);
     ~mpu6050();
-    mpu6050_data read_data(void) const;
+    mpu6050_data read_data(void);
 };
 
 #endif
