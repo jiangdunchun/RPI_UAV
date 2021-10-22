@@ -96,8 +96,8 @@
 // 	return 0;
 // }
 
-#include "device/mpu6050.h"
-#include "common/logger.h"
+#include <device/mpu6050.h>
+#include <common/logger.h>
 
 int main() {
 	logger l("127.0.0.1", 8086, "test");

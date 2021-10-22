@@ -1,22 +1,23 @@
-#include "motor.h"
+#include <device/motor.h>
 
 #include <algorithm>
+#include <unistd.h>
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
 using namespace std;
 
-void motor::motor_run(void) {
+void motor::motor_run(motor* m_ptr) {
     while (true) {
         int tmp;
-        pthread_mutex_lock(&m_mutex);
-        tmp = m_speed;
-        pthread_mutex_unlock(&m_mutex);
+        pthread_mutex_lock(&(m_ptr->m_mutex));
+        tmp = m_ptr->m_speed;
+        pthread_mutex_unlock(&(m_ptr->m_mutex));
 
-        digitalWrite(m_address, HIGH);
-		delay(1000 + tmp);
-		digitalWrite(m_address, LOW);
-		delay(1000 - tmp);
+        digitalWrite(m_ptr->m_address, HIGH);
+		usleep(m_ptr->m_max_speed + tmp);
+		digitalWrite(m_ptr->m_address, LOW);
+		usleep(m_ptr->m_max_speed - tmp);
     }
 }
 
@@ -25,13 +26,12 @@ motor::motor(unsigned int address, unsigned int max_speed) {
     m_max_speed = max_speed;
     m_speed = 0;
 
-    // pFUNC callback = reinterpret_cast<pFUNC>(&motor::motor_run);
-    // pthread_create(&m_run, (const pthread_attr_t*) NULL, (void* (*)(void*)) &callback, NULL);
-    // pthread_join(m_run, NULL);
+    //pthread_create(&m_run, (const pthread_attr_t*) NULL, (void* (*)(void*)) &motor_run, this);
+    pthread_join(m_run, NULL);
 }
 
 motor::~motor() {
-    //pthread_cancel(m_run);
+    pthread_cancel(m_run);
 }
 
 unsigned int motor::get_speed(void) {

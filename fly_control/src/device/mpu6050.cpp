@@ -1,4 +1,4 @@
-#include "mpu6050.h"
+#include <device/mpu6050.h>
 
 #include <wiringPiI2C.h>
 #include <wiringPi.h>

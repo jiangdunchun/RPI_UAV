@@ -2,7 +2,7 @@
 #define __LOGGER_H__
 
 #include <string>
-#include "../third_party/influxdb-cpp/influxdb.hpp"
+#include <influxdb-cpp/influxdb.hpp>
 
 class logger {
 private:
