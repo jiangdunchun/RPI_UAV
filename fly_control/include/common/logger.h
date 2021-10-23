@@ -7,6 +7,7 @@
 class logger {
 private:
     influxdb_cpp::server_info* m_si;
+    static void post(influxdb_cpp::detail::field_caller& data, server_info* si);
 public:
     logger(std::string ip, int port, std::string db);
     ~logger();
