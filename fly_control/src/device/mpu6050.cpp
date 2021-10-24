@@ -15,14 +15,18 @@
 #define GYRO_YOUT_H  0x45
 #define GYRO_ZOUT_H  0x47
 
-short mpu6050::read_raw_data(int address) {
+unsigned int mpu6050::m_fd = 0;
+
+short mpu6050::read_raw_data(unsigned int address) {
 	short high_byte = wiringPiI2CReadReg8(m_fd, address);
 	short low_byte = wiringPiI2CReadReg8(m_fd, address + 1);
 	short value = (high_byte << 8) | low_byte;
 	return value;
 }
 
-mpu6050::mpu6050(int device_address) {
+void mpu6050::init(unsigned int device_address) {
+	wiringPiSetup();
+
     m_fd = wiringPiI2CSetup(device_address);
     wiringPiI2CWriteReg8(m_fd, SMPLRT_DIV, 0x07);
 	wiringPiI2CWriteReg8(m_fd, PWR_MGMT_1, 0x01);
@@ -31,7 +35,7 @@ mpu6050::mpu6050(int device_address) {
 	wiringPiI2CWriteReg8(m_fd, INT_ENABLE, 0x01);
 }
 
-mpu6050::~mpu6050() {
+void mpu6050::shutdown() {
 
 }
 

@@ -12,12 +12,13 @@ struct mpu6050_data {
 
 class mpu6050 {
 private:
-    int m_fd;
-    short read_raw_data(int address);
+    static unsigned int m_fd;
+    
+    static short read_raw_data(unsigned int address);
 public:
-    mpu6050(int device_address);
-    ~mpu6050();
-    mpu6050_data read_data(void);
+    static void init(unsigned int device_address);
+    static void shutdown();
+    static mpu6050_data read_data(void);
 };
 
 #endif

@@ -6,13 +6,14 @@
 
 class logger {
 private:
-    influxdb_cpp::server_info* m_si;
+    static influxdb_cpp::server_info* m_si;
+    static void post(influxdb_cpp::detail::field_caller* data, influxdb_cpp::server_info* m_si);
 public:
-    logger(std::string ip, int port, std::string db);
-    ~logger();
-    void log(std::string tag, std::string name, std::string value);
-    void log(std::string tag, std::string name, int value);
-    void log(std::string tag, std::string name, float value);
+    static void init(std::string ip, int port, std::string db);
+    static void shutdown();
+    static void log(std::string tag, std::string name, std::string value);
+    static void log(std::string tag, std::string name, int value);
+    static void log(std::string tag, std::string name, float value);
 };
 
 #endif
