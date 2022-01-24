@@ -15,7 +15,7 @@ class kalman_filter:
 
     def filte(self, angle, rate, dt):
         self.angle += (rate - self.bias) * dt
-        self.rate = rate
+        self.rate = rate - self.bias
 
         self.P[0][0] += (dt*self.P[1][1] -self.P[0][1] - self.P[1][0] + self.Q_angle) * dt
         self.P[0][1] -= self.P[1][1]
@@ -24,7 +24,7 @@ class kalman_filter:
 
         K_gain = [0.0,0.0]
         K_gain[0] = self.P[0][0] / (self.P[0][0] + self.R_measure)
-        K_gain[1] = self.P[1][0] / (self.P[1][0] + self.R_measure)
+        K_gain[1] = self.P[1][0] / (self.P[0][0] + self.R_measure)
 
         y = angle - self.angle
 
