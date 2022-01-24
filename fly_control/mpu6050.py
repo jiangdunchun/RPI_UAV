@@ -3,6 +3,43 @@
 
 import smbus
 import math
+class kalman_filter:
+    def __init__(self, bias, Q_angle = 0.001, Q_gyro_bias = 0.003, R_measure = 0.03):
+        self.angle = 0.0
+        self.rate = 0.0
+        self.bias = bias
+        self.Q_angle = Q_angle
+        self.Q_gyro_bias = Q_gyro_bias
+        self.R_measure = R_measure
+        self.P = [[0.0,0.0],[0.0,0.0]]
+
+    def filte(self, angle, rate, dt):
+        self.angle += (rate - self.bias) * dt
+        self.rate = rate
+
+        self.P[0][0] += (dt*self.P[1][1] -self.P[0][1] - self.P[1][0] + self.Q_angle) * dt
+        self.P[0][1] -= self.P[1][1]
+        self.P[1][0] -= self.P[1][1]
+        self.P[1][1] += self.Q_gyro_bias * dt
+
+        K_gain = [0.0,0.0]
+        K_gain[0] = self.P[0][0] / (self.P[0][0] + self.R_measure)
+        K_gain[1] = self.P[1][0] / (self.P[1][0] + self.R_measure)
+
+        y = angle - self.angle
+
+        self.angle += K_gain[0] * y
+        self.rate += K_gain[1] * y
+
+        P00_temp = self.P[0][0]
+        P01_temp = self.P[0][1]
+
+        self.P[0][0] -= P00_temp * K_gain[0]
+        self.P[0][1] -= P01_temp * K_gain[0]
+        self.P[1][0] -= P00_temp * K_gain[1]
+        self.P[1][1] -= P01_temp * K_gain[1]
+
+        return self.angle
 
 
 def init(device = 0x68):
